@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atlas de Viaje — Los Mejores Destinos del Mundo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --ink: #1c1c1a;
+  --paper: #f7f4ef;
+  --paper2: #efecea;
+  --line: #c8c4bc;
+  --muted: #7a7670;
+  --accent: #2a4a3e;
+}
+html { scroll-behavior: smooth; }
+body { background: var(--paper); color: var(--ink); font-family: 'DM Sans', sans-serif; font-size: 15px; line-height: 1.7; }
+a { color: inherit; text-decoration: none; }
+
+.masthead { border-bottom: 1px solid var(--ink); padding: 28px 48px 20px; display: flex; align-items: baseline; justify-content: space-between; gap: 20px; }
+.masthead-title { font-family: 'EB Garamond', Georgia, serif; font-size: 13px; letter-spacing: 4px; text-transform: uppercase; color: var(--muted); }
+.masthead-logo { font-family: 'EB Garamond', Georgia, serif; font-size: 46px; letter-spacing: -1px; line-height: 1; }
+.masthead-issue { font-size: 12px; color: var(--muted); text-align: right; line-height: 1.6; }
+
+nav { border-bottom: 1px solid var(--line); padding: 0 48px; display: flex; gap: 0; overflow-x: auto; }
+nav a { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; padding: 14px 18px; color: var(--muted); border-bottom: 2px solid transparent; white-space: nowrap; }
+nav a:hover { color: var(--ink); border-bottom-color: var(--ink); }
+
+.hero { display: grid; grid-template-columns: 1fr 1fr; min-height: 480px; }
+.hero-text { padding: 64px 48px; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid var(--line); }
+.hero-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
+.hero-heading { font-family: 'EB Garamond', Georgia, serif; font-size: 62px; line-height: 1.05; letter-spacing: -1px; margin-bottom: 24px; }
+.hero-heading em { font-style: italic; color: var(--muted); }
+.hero-body { font-size: 16px; color: var(--muted); max-width: 380px; line-height: 1.8; }
+.hero-img { object-fit: cover; width: 100%; height: 100%; display: block; filter: sepia(10%) contrast(1.05); }
+
+.section-divider { display: flex; align-items: center; gap: 16px; padding: 48px 48px 32px; }
+.section-divider::before, .section-divider::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+.section-divider span { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+
+.country-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+.country-card { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.country-img-wrap { overflow: hidden; height: 200px; }
+.country-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; filter: sepia(8%) contrast(1.08); transition: transform 0.5s ease; }
+.country-card:hover .country-img-wrap img { transform: scale(1.04); }
+.country-info { padding: 20px 22px 24px; }
+.country-flag { font-size: 22px; margin-bottom: 8px; display: block; }
+.country-name { font-family: 'EB Garamond', Georgia, serif; font-size: 26px; margin-bottom: 4px; }
+.country-tagline { font-size: 12px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+.country-desc { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 16px; }
+.country-meta { display: flex; gap: 18px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 14px; }
+.country-meta span { display: flex; flex-direction: column; gap: 2px; }
+.country-meta strong { color: var(--ink); font-size: 13px; }
+
+.feature { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.feature-img { overflow: hidden; }
+.feature-img img { width: 100%; height: 100%; min-height: 420px; object-fit: cover; display: block; filter: sepia(8%) contrast(1.06); }
+.feature-content { padding: 56px 48px; display: flex; flex-direction: column; justify-content: center; border-left: 1px solid var(--line); }
+.feature-kicker { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+.feature-title { font-family: 'EB Garamond', Georgia, serif; font-size: 44px; line-height: 1.1; margin-bottom: 20px; }
+.feature-body { font-size: 15px; color: var(--muted); line-height: 1.85; margin-bottom: 28px; }
+.feature-list { list-style: none; font-size: 14px; }
+.feature-list li { padding: 8px 0; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; }
+.feature-list li:first-child { border-top: 1px solid var(--line); }
+.feature-list .place { color: var(--ink); }
+.feature-list .detail { color: var(--muted); font-style: italic; }
+
+.tips-strip { background: var(--ink); color: var(--paper); padding: 48px; }
+.tips-strip h2 { font-family: 'EB Garamond', Georgia, serif; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: #a09890; margin-bottom: 32px; }
+.tips-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+.tip-num { font-family: 'EB Garamond', Georgia, serif; font-size: 48px; color: #3a3630; line-height: 1; margin-bottom: 10px; }
+.tip-title { font-size: 14px; font-weight: 500; margin-bottom: 8px; }
+.tip-body { font-size: 13px; color: #9a9088; line-height: 1.75; }
+
+.video-section { padding: 0 48px 48px; }
+.video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 16px; }
+.video-label { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+.video-wrap { position: relative; padding-bottom: 56.25%; height: 0; }
+.video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; display: block; }
+
+.table-section { padding: 0 48px 64px; }
+.data-table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 16px; }
+.data-table thead tr { border-bottom: 2px solid var(--ink); }
+.data-table th { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); padding: 10px 16px 10px 0; font-weight: 400; text-align: left; }
+.data-table td { padding: 13px 16px 13px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+.data-table td:first-child { font-family: 'EB Garamond', Georgia, serif; font-size: 16px; }
+
+.photo-essay { padding: 0 48px 64px; }
+.photo-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 240px 240px; gap: 3px; margin-top: 16px; }
+.photo-grid img { width: 100%; height: 100%; object-fit: cover; display: block; filter: sepia(8%) contrast(1.06); }
+.photo-grid img:first-child { grid-row: 1 / 3; }
+.photo-caption { font-size: 12px; color: var(--muted); font-style: italic; margin-top: 10px; }
+
+footer { border-top: 2px solid var(--ink); padding: 32px 48px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--muted); }
+footer .footer-logo { font-family: 'EB Garamond', Georgia, serif; font-size: 22px; color: var(--ink); }
+.footer-links { display: flex; gap: 24px; }
+.footer-links a:hover { color: var(--ink); }
+
+@media (max-width: 768px) {
+  .masthead { padding: 20px; flex-wrap: wrap; }
+  .hero { grid-template-columns: 1fr; }
+  .country-grid { grid-template-columns: 1fr; }
+  .feature { grid-template-columns: 1fr; }
+  .tips-grid { grid-template-columns: 1fr; }
+  .video-grid { grid-template-columns: 1fr; }
+  .photo-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+  .photo-grid img:first-child { grid-row: auto; }
+  nav, .hero-text, .section-divider, .feature-content, .tips-strip, .video-section, .table-section, .photo-essay, footer { padding-left: 20px; padding-right: 20px; }
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <span class="masthead-title">Guía de Viaje</span>
+  <span class="masthead-logo">Atlas</span>
+  <span class="masthead-issue">Los mejores destinos<br>del mundo · 2025</span>
+</header>
+
+<nav>
+  <a href="index.html">← Portada</a>
+  <a href="#destinos">Destinos</a>
+  <a href="#japon">Destacado</a>
+  <a href="#consejos">Consejos</a>
+  <a href="#galeria">Galería</a>
+  <a href="#videos">Vídeos</a>
+  <a href="#cuando">Cuándo ir</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-text">
+    <p class="hero-label">Edición mundial · 6 destinos esenciales</p>
+    <h1 class="hero-heading">Seis países.<br><em>Un solo viaje</em><br>en el tiempo.</h1>
+    <p class="hero-body">De los canales de Venecia a los torii de Kioto, de la Torre Eiffel a la Gran Mezquita Azul. Esta guía reúne lo imprescindible de los destinos más visitados del planeta.</p>
+  </div>
+  <img class="hero-img" src="monte-fuji.jpg" alt="Monte Fuji">
+</section>
+
+<div class="section-divider" id="destinos"><span>Los destinos</span></div>
+
+<section class="country-grid">
+  <article class="country-card">
+    <div class="country-img-wrap">
+      <img src="torre-eiffel.jpg" alt="Torre Eiffel">
+    </div>
+    <div class="country-info">
+      <span class="country-flag">🇫🇷</span>
+      <h2 class="country-name">Francia</h2>
+      <p class="country-tagline">Arte, gastronomía y elegancia</p>
+      <p class="country-desc">El país más visitado del mundo. París concentra museos de clase mundial, arquitectura monumental y una escena gastronómica sin igual. La Provenza, Bretaña y los Alpes ofrecen una Francia completamente distinta.</p>
+      <div class="country-meta">
+        <span><strong>París</strong>Capital</span>
+        <span><strong>89M</strong>Turistas/año</span>
+        <span><strong>Abr–Jun</strong>Mejor época</span>
+      </div>
+    </div>
+  </article>
+
+  <article class="country-card">
+    <div class="country-img-wrap">
+      <img src="sagrada-familia.jpg" alt="Sagrada Familia, Barcelona">
+    </div>
+    <div class="country-info">
+      <span class="country-flag">🇪🇸</span>
+      <h2 class="country-name">España</h2>
+      <p class="country-tagline">Sol, historia y arquitectura única</p>
+      <p class="country-desc">De la Sagrada Familia en Barcelona a la Alhambra de Granada, España tiene una densidad cultural difícil de igualar. La gastronomía regional, el flamenco y los paisajes variados hacen de cada viaje algo nuevo.</p>
+      <div class="country-meta">
+        <span><strong>Madrid</strong>Capital</span>
+        <span><strong>83M</strong>Turistas/año</span>
+        <span><strong>Mar–May</strong>Mejor época</span>
+      </div>
+    </div>
+  </article>
+
+  <article class="country-card">
+    <div class="country-img-wrap">
+      <img src="nueva-york.jpg" alt="Nueva York">
+    </div>
+    <div class="country-info">
+      <span class="country-flag">🇺🇸</span>
+      <h2 class="country-name">Estados Unidos</h2>
+      <p class="country-tagline">De costa a costa, sin límites</p>
+      <p class="country-desc">Nueva York, Los Ángeles, el Gran Cañón, los Parques Nacionales, Miami y Nueva Orleans representan mundos distintos dentro de un mismo país. El tamaño de EE.UU. es su mayor atractivo.</p>
+      <div class="country-meta">
+        <span><strong>Washington</strong>Capital</span>
+        <span><strong>79M</strong>Turistas/año</span>
+        <span><strong>Sep–Nov</strong>Mejor época</span>
+      </div>
+    </div>
+  </article>
+
+  <article class="country-card">
+    <div class="country-img-wrap">
+      <img src="venecia.jpg" alt="Venecia">
+    </div>
+    <div class="country-info">
+      <span class="country-flag">🇮🇹</span>
+      <h2 class="country-name">Italia</h2>
+      <p class="country-tagline">Historia, arte y la mejor cocina</p>
+      <p class="country-desc">Italia es el país con más Patrimonio de la Humanidad del mundo. Una cocina regional que cambia cada pocos kilómetros y paisajes de postal en la Toscana y la Costa Amalfitana completan una experiencia irrepetible.</p>
+      <div class="country-meta">
+        <span><strong>Roma</strong>Capital</span>
+        <span><strong>68M</strong>Turistas/año</span>
+        <span><strong>Abr–Jun</strong>Mejor época</span>
+      </div>
+    </div>
+  </article>
+
+  <article class="country-card">
+    <div class="country-img-wrap">
+      <img src="mezquita-azul.jpg" alt="Mezquita Azul">
+    </div>
+    <div class="country-info">
+      <span class="country-flag">🇹🇷</span>
+      <h2 class="country-name">Turquía</h2>
+      <p class="country-tagline">El puente entre dos civilizaciones</p>
+      <p class="country-desc">Estambul es la síntesis de Europa y Asia. Capadocia con sus globos aerostáticos al amanecer, las playas de Antalya y las ruinas de Éfeso completan un país extraordinariamente diverso y accesible.</p>
+      <div class="country-meta">
+        <span><strong>Ankara</strong>Capital</span>
+        <span><strong>51M</strong>Turistas/año</span>
+        <span><strong>Abr–Jun</strong>Mejor época</span>
+      </div>
+    </div>
+  </article>
+
+  <article class="country-card">
+    <div class="country-img-wrap">
+      <img src="fushimi-inari.jpg" alt="Fushimi Inari">
+    </div>
+    <div class="country-info">
+      <span class="country-flag">🇯🇵</span>
+      <h2 class="country-name">Japón</h2>
+      <p class="country-tagline">Tradición y futuro en perfecta armonía</p>
+      <p class="country-desc">La precisión japonesa impregna todo: el transporte, la gastronomía, los jardines. Tokio, Kioto y Osaka ofrecen tres experiencias radicalmente distintas que se complementan a la perfección en un solo viaje.</p>
+      <div class="country-meta">
+        <span><strong>Tokio</strong>Capital</span>
+        <span><strong>31M</strong>Turistas/año</span>
+        <span><strong>Mar–May</strong>Mejor época</span>
+      </div>
+    </div>
+  </article>
+</section>
+
+<div class="section-divider" id="japon"><span>Destino destacado</span></div>
+
+<section class="feature">
+  <div class="feature-img">
+    <img src="bosque-bambu.jpg" alt="Bosque de bambú">
+  </div>
+  <div class="feature-content">
+    <p class="feature-kicker">Japón · Destino del año</p>
+    <h2 class="feature-title">Kioto: cuando el tiempo se detiene</h2>
+    <p class="feature-body">Kioto fue la capital imperial de Japón durante más de mil años. Sus más de 1.600 templos budistas y 400 santuarios sintoístas conviven con barrios de geishas, jardines de piedra y cerezos en flor que cada primavera detienen el mundo entero.</p>
+    <ul class="feature-list">
+      <li><span class="place">Fushimi Inari</span><span class="detail">Miles de torii rojos en la montaña</span></li>
+      <li><span class="place">Arashiyama</span><span class="detail">Bosque de bambú y templo Tenryu-ji</span></li>
+      <li><span class="place">Gion</span><span class="detail">El barrio histórico de las geishas</span></li>
+      <li><span class="place">Kinkaku-ji</span><span class="detail">El Pabellón de Oro junto al lago</span></li>
+      <li><span class="place">Nishiki Market</span><span class="detail">Cocina callejera de cinco siglos</span></li>
+    </ul>
+  </div>
+</section>
+
+<div class="section-divider" id="consejos"><span>Consejos prácticos</span></div>
+
+<section class="tips-strip">
+  <h2>Lo que necesitas saber antes de salir</h2>
+  <div class="tips-grid">
+    <div>
+      <div class="tip-num">01</div>
+      <p class="tip-title">Reserva con antelación</p>
+      <p class="tip-body">Los vuelos y hoteles en temporada alta en Europa y Japón se agotan meses antes. Reservar con 3–4 meses de antelación puede suponer un ahorro del 40%.</p>
+    </div>
+    <div>
+      <div class="tip-num">02</div>
+      <p class="tip-title">Tarjeta sin comisiones</p>
+      <p class="tip-body">Las tarjetas con cambio de divisa real eliminan las comisiones. En Japón, lleva efectivo: muchos establecimientos siguen sin aceptar tarjeta fuera de las ciudades grandes.</p>
+    </div>
+    <div>
+      <div class="tip-num">03</div>
+      <p class="tip-title">Seguro de viaje</p>
+      <p class="tip-body">Una cobertura sanitaria básica es imprescindible, especialmente en EE.UU. donde una urgencia puede costar miles sin seguro. Incluye cancelación si viajas en temporada de huracanes.</p>
+    </div>
+    <div>
+      <div class="tip-num">04</div>
+      <p class="tip-title">Mapas sin conexión</p>
+      <p class="tip-body">Google Maps y Maps.me permiten descargar zonas completas sin datos. Imprescindible en rutas rurales de Italia, Turquía o los parques nacionales de EE.UU.</p>
+    </div>
+    <div>
+      <div class="tip-num">05</div>
+      <p class="tip-title">Costumbres locales</p>
+      <p class="tip-body">En Japón no se propina. En Francia es descortés entrar sin saludar. En Turquía, descálzate en las mezquitas. Pequeños gestos que cambian por completo cómo te tratan.</p>
+    </div>
+    <div>
+      <div class="tip-num">06</div>
+      <p class="tip-title">Combina el transporte</p>
+      <p class="tip-body">El Interrail vale la pena en Europa si visitas 3+ países. El JR Pass es rentable en Japón desde dos trayectos en Shinkansen. En EE.UU., el coche es rey fuera de las grandes ciudades.</p>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider" id="galeria"><span>Galería</span></div>
+
+<section class="photo-essay">
+  <div class="photo-grid">
+    <img src="eiffel-amanecer.jpg" alt="Torre Eiffel al amanecer">
+    <img src="estambul.jpg" alt="Mezquita Azul, Estambul">
+    <img src="vene.jpg" alt="Venecia">
+    <img src="monte.jpg" alt="Monte Fuji">
+    <img src="central-park.jpg" alt="Nueva York">
+  </div>
+  <p class="photo-caption">Torre Eiffel · Mezquita Azul · Venecia · Monte Fuji · Central Park, Nueva York</p>
+</section>
+
+<div class="section-divider" id="cuando"><span>Cuándo viajar</span></div>
+
+<section class="table-section">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>País</th>
+        <th>Mejor época</th>
+        <th>A evitar</th>
+        <th>Evento imprescindible</th>
+        <th>Presupuesto/día</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>🇫🇷 Francia</td>
+        <td>Abril – Junio</td>
+        <td>Agosto (masificación)</td>
+        <td>Tour de France, Bastille Day</td>
+        <td>120–200 €</td>
+      </tr>
+      <tr>
+        <td>🇪🇸 España</td>
+        <td>Marzo – Mayo</td>
+        <td>Julio–Agosto (calor extremo)</td>
+        <td>Feria de Sevilla, San Fermín</td>
+        <td>80–150 €</td>
+      </tr>
+      <tr>
+        <td>🇺🇸 Estados Unidos</td>
+        <td>Sept – Noviembre</td>
+        <td>Jun–Ago (calor + precios)</td>
+        <td>Thanksgiving, Macy's Parade</td>
+        <td>150–300 $</td>
+      </tr>
+      <tr>
+        <td>🇮🇹 Italia</td>
+        <td>Abril – Junio</td>
+        <td>Agosto (masificación)</td>
+        <td>Carnaval de Venecia</td>
+        <td>100–180 €</td>
+      </tr>
+      <tr>
+        <td>🇹🇷 Turquía</td>
+        <td>Abril – Junio</td>
+        <td>Jul–Ago (calor extremo)</td>
+        <td>Festivales de Capadocia</td>
+        <td>50–100 €</td>
+      </tr>
+      <tr>
+        <td>🇯🇵 Japón</td>
+        <td>Marzo – Mayo</td>
+        <td>Agosto (calor + Obon)</td>
+        <td>Hanami — floración cerezos</td>
+        <td>100–180 €</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="section-divider" id="videos"><span>Inspiración en vídeo</span></div>
+
+<section class="video-section">
+  <div class="video-grid">
+    <div>
+      <p class="video-label">Tokio en 4K</p>
+      <a href="https://www.youtube.com/watch?v=O2yMv1JDYRU" target="_blank" style="position:relative; display:block;">
+        <img src="https://img.youtube.com/vi/O2yMv1JDYRU/maxresdefault.jpg" alt="Tokio en 4K" style="width:100%; display:block;">
+        <span style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,0.65); color:white; font-size:48px; padding:8px 20px; border-radius:8px;">▶</span>
+      </a>
+    </div>
+    <div>
+      <p class="video-label">Los templos de Kioto</p>
+      <a href="https://www.youtube.com/watch?v=N4nmlatTq2g" target="_blank" style="position:relative; display:block;">
+        <img src="https://img.youtube.com/vi/N4nmlatTq2g/maxresdefault.jpg" alt="Los templos de Kioto" style="width:100%; display:block;">
+        <span style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,0.65); color:white; font-size:48px; padding:8px 20px; border-radius:8px;">▶</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-logo">Atlas</span>
+  <div class="footer-links">
+    <a href="#">Francia</a>
+    <a href="#">España</a>
+    <a href="#">Italia</a>
+    <a href="#">EE.UU.</a>
+    <a href="#">Turquía</a>
+    <a href="#">Japón</a>
+  </div>
+  <span>© 2025 Atlas · Guía de Viaje</span>
+</footer>
+
+</body>
+</html>
